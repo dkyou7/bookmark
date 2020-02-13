@@ -57,3 +57,15 @@ INSTALLED_APPS = [
 
   > python manage.py migrate bookmark
 
+### 4. 관리자 페이지
+
+- 관리자 페이지에 미리 모델을 관리할 수 있도록 등록하자.
+
+```python
+from django.contrib import admin
+from .models import Bookmark
+
+# Register your models here.
+admin.site.register(Bookmark)	# <-- 작성된 모델을 등록해준다.
+```
+
