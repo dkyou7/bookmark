@@ -73,3 +73,99 @@ from .models import Bookmark
 admin.site.register(Bookmark)	# <-- 작성된 모델을 등록해준다.
 ```
 
+### 5. 뷰 만들기
+
+- 프론트에서 해당 기능을 사용할 수 있도록 만들기
+
+#### 5.1 제네릭 뷰를 사용하여 등록해주자
+
+```python
+from django.shortcuts import render
+from django.views.generic.list import ListView
+
+from .models import Bookmark
+
+# Create your views here.
+class BookmarkListView(ListView):
+    model = Bookmark
+```
+
+- 뷰를 만들었다면, 어떤 주소를 사용해 이 뷰를 호출할 수 있도록 연결해야한다.
+- 어떤 주소를 입력시, 해당 페이지를 보여줄 수 있어야 한다.
+
+#### 5.2 url과 뷰를 연결시켜주자
+
+`config/urls.py`
+
+```python
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    path("bookmark/", include('bookmark.urls')),
+    path('admin/', admin.site.urls),
+]
+```
+
+- `bookmark.urls`에 연동되도록 코딩하였다. 
+
+#### 5.3 해당 url을 설정하자
+
+`bookmark/urls.py`
+
+```python
+from django.urls import path
+from .views import BookmarkListView
+
+urlpatterns = [
+    path('',BookmarkListView.as_view(),name='list'),
+]
+```
+
+#### 5.4 해당 url을 표현해주는 template를 만들어주자
+
+`bookmark/templates/bookmark/bookmark_list.html`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>리스트</title>
+</head>
+<body>
+    <div class="btn-group">
+        <a href="#" class="btn btn-info">Add Bookmark</a>
+    </div>
+    <p></p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Site</th>
+                <th scope="col">URL</th>
+                <th scope="col">Modify</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bookmark in object_list %}
+            <br>
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><a href="#">{{bookmark.site_name}}</a></td>
+                    <td><a href="{{bookmark.url}}" target="_blank">{{bookmark.url}}</a></td>
+                    <td><a href="#" class="btn btn-success btn-sm">Modify</a></td>
+                    <td><a href="#" class="btn btn-danger btn-sm">Delete</a></td>
+                </tr>   
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+```
+
+
+
+
+
