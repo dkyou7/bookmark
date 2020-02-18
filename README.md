@@ -82,11 +82,23 @@ admin.site.register(Bookmark)	# <-- 작성된 모델을 등록해준다.
 ```python
 from django.shortcuts import render
 from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
+from django.views.generic.detail import DetailView
+from django.urls import reverse_lazy
 
 from .models import Bookmark
 
 # Create your views here.
 class BookmarkListView(ListView):
+    model = Bookmark
+
+class BookmarkCreateView(CreateView):
+    model = Bookmark
+    fields = ['site_name','url']
+    success_url = reverse_lazy('list')
+    template_name_suffix = '_create'
+
+class BookmarkDetailView(DetailView):
     model = Bookmark
 ```
 
@@ -115,10 +127,12 @@ urlpatterns = [
 
 ```python
 from django.urls import path
-from .views import BookmarkListView
+from .views import BookmarkListView, BookmarkCreateView, BookmarkDetailView
 
 urlpatterns = [
     path('',BookmarkListView.as_view(),name='list'),
+    path('add/',BookmarkCreateView.as_view(),name="add"),
+    path('detail/<int:pk>/',BookmarkDetailView.as_view(),name='detail'),
 ]
 ```
 
@@ -129,39 +143,37 @@ urlpatterns = [
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>리스트</title>
-</head>
-<body>
-    <div class="btn-group">
-        <a href="#" class="btn btn-info">Add Bookmark</a>
-    </div>
-    <p></p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Site</th>
-                <th scope="col">URL</th>
-                <th scope="col">Modify</th>
-                <th scope="col">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for bookmark in object_list %}
-            <br>
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td><a href="#">{{bookmark.site_name}}</a></td>
-                    <td><a href="{{bookmark.url}}" target="_blank">{{bookmark.url}}</a></td>
-                    <td><a href="#" class="btn btn-success btn-sm">Modify</a></td>
-                    <td><a href="#" class="btn btn-danger btn-sm">Delete</a></td>
-                </tr>   
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>추가하기</title>
+    </head>
+    <body>
+        <div>
+            <a href="{% url 'add' %}" class="btn btn-info">Add Bookmark</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Site</th>
+                    <th>URL</th>
+                    <th>Modify</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bookmark in object_list %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><a href="{% url 'detail' pk=bookmark.id %}">{{bookmark.site_name}}</a></td>
+                        <td><a href="{{bookmark.url}}" target="_blank">{{bookmark.url}}</a>
+                        <td><a href="#">Modify</a></td>
+                        <td><a href="#">Delete</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
 </html>
 ```
 
