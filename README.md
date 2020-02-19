@@ -183,5 +183,17 @@ urlpatterns = [
 
 ### 8. 정적 파일 사용해서 CSS 꾸미기
 
+1. `static/style.css`파일 만들기
 
+2. `config/settings.py` 맨 밑에
+
+   > ```python
+   > STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
+   > ```
+
+   추가
+
+   
+
+   
 
