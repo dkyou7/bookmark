@@ -82,7 +82,7 @@ admin.site.register(Bookmark)	# <-- 작성된 모델을 등록해준다.
 ```python
 from django.shortcuts import render
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 
@@ -100,6 +100,15 @@ class BookmarkCreateView(CreateView):
 
 class BookmarkDetailView(DetailView):
     model = Bookmark
+
+class BookmarkUpdateView(UpdateView):
+    model = Bookmark
+    fields = ['site_name','url']
+    template_name_suffix = '_update'
+
+class BookmarkDeleteView(DeleteView):
+    model = Bookmark
+    success_url = reverse_lazy('list')
 ```
 
 - 뷰를 만들었다면, 어떤 주소를 사용해 이 뷰를 호출할 수 있도록 연결해야한다.
@@ -127,12 +136,14 @@ urlpatterns = [
 
 ```python
 from django.urls import path
-from .views import BookmarkListView, BookmarkCreateView, BookmarkDetailView
+from .views import BookmarkListView, BookmarkCreateView, BookmarkDetailView, BookmarkUpdateView, BookmarkDeleteView
 
 urlpatterns = [
     path('',BookmarkListView.as_view(),name='list'),
     path('add/',BookmarkCreateView.as_view(),name="add"),
     path('detail/<int:pk>/',BookmarkDetailView.as_view(),name='detail'),
+    path('update/<int:pk>/',BookmarkUpdateView.as_view(),name='update'),
+    path('delete/<int:pk>/', BookmarkDeleteView.as_view(), name='delete'),
 ]
 ```
 
@@ -140,44 +151,23 @@ urlpatterns = [
 
 `bookmark/templates/bookmark/bookmark_list.html`
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>추가하기</title>
-    </head>
-    <body>
-        <div>
-            <a href="{% url 'add' %}" class="btn btn-info">Add Bookmark</a>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Site</th>
-                    <th>URL</th>
-                    <th>Modify</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for bookmark in object_list %}
-                    <tr>
-                        <td>{{forloop.counter}}</td>
-                        <td><a href="{% url 'detail' pk=bookmark.id %}">{{bookmark.site_name}}</a></td>
-                        <td><a href="{{bookmark.url}}" target="_blank">{{bookmark.url}}</a>
-                        <td><a href="#">Modify</a></td>
-                        <td><a href="#">Delete</a></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </body>
-</html>
-```
+`bookmark/templates/bookmark/bookmark_create.html`
 
-### 6. 북마크 추가 기능 구현
+`bookmark/templates/bookmark/bookmark_confirm_delete.html`
+
+`bookmark/templates/bookmark/bookmark_detail.html`
+
+`bookmark/templates/bookmark/bookmark_update.html`
+
+### 6. 북마크 추가, 수정, 삭제 기능 구현
+
+1. bookmark/views.py 구현
+2. bookmark/urls.py 연동
+3. 해당 url을 표현해주는 template 구현
+
+
+
+
 
 
 
