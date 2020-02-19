@@ -165,15 +165,23 @@ urlpatterns = [
 2. bookmark/urls.py 연동
 3. 해당 url을 표현해주는 template 구현
 
-### 7. template 확장하고 디자인 입히기
+### 7. 디자인 입히기
 
-`templates/base.html` 로 전체 navigation 입히기
+#### 7.1 template 확장하기, 구조 변경하기
 
+1. `templates/base.html` 로 전체 navigation 입히기
+2. 각각의 template 들을 알맞게 수정해주자.
 
+#### 7.2 Bootstrap 사용하기
 
+#### 7.3 헤더, 페이지네이션 사용하기
 
+> paginate_by = 3
 
+- 페이지네이션을 지원하는 django 기능이다...
+- 몇개 단위로 끊을 것인지 알려준다.
 
+### 8. 정적 파일 사용해서 CSS 꾸미기
 
 
 
