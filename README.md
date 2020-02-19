@@ -165,6 +165,10 @@ urlpatterns = [
 2. bookmark/urls.py 연동
 3. 해당 url을 표현해주는 template 구현
 
+### 7. template 확장하고 디자인 입히기
+
+`templates/base.html` 로 전체 navigation 입히기
+
 
 
 
