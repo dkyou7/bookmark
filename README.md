@@ -193,7 +193,33 @@ urlpatterns = [
 
    추가
 
-   
+### 9. 베포하기
 
-   
+- 깃허브 업로드, 파이썬 애니웨어에서 소스코드를 깃 명령을 이용해 다운
+- 몇가지 셋팅 후 베포 완료
+
+#### 9.1 소스 코드 업로드
+
+- `.gitignore`
+
+```python
+*.pyc
+*~
+/venv
+__pycache__
+db.sqlite3
+.DS_Store
+```
+
+- `settings.py`
+
+```python
+DEBUG = False
+
+ALLOWED_HOSTS = ['*']
+```
+
+
+
+
 
