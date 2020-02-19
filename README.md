@@ -219,7 +219,24 @@ DEBUG = False
 ALLOWED_HOSTS = ['*']
 ```
 
+#### 9.2 git 에 업로드
 
+#### 9.3 pythonanywhere 에 git 파일 업로드
 
+- 회원 가입
 
+- bash
+
+  ```
+  pwd
+  git clone ~~~.git
+  cd bookmark
+  virtualenv venv --python=3.7
+  source venv/bin/activate
+  pip install django
+  python manage.py migrate
+  python manage.py createsuperuser
+  ```
+
+- 웹 앱 생성 후 WSGI 설정
 
